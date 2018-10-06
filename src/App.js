@@ -1,25 +1,47 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Form from './components/Form/Form';
+import TodoList from "./containers/TodoList/TodoList";
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      items: []
+    }
+    this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
+    this.updateItems = this.updateItems.bind(this);
+  }
+
+  addItem (item) {
+    const items = [...this.state.items, item]
+    this.setState({
+      items: items
+    })
+    console.log(items);
+  }
+
+  removeItem (key) {
+    const items = this.state.items.filter(item => item.key !== key);
+    this.setState({
+      items: items
+    })
+  }
+
+  updateItems(data) {
+    const items = [...this.state.items, ...data];
+    this.setState({
+      items: items
+    })
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Form addItem={this.addItem}></Form>
+        <TodoList items={this.state.items} removeItem={this.removeItem} updateItems={this.updateItems}></TodoList>
       </div>
     );
   }
